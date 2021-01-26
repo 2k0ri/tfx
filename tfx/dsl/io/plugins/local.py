@@ -36,10 +36,7 @@ class LocalFilesystem(filesystem.Filesystem):
 
   @staticmethod
   def open(name: PathType, mode: Text = 'r') -> Any:
-    try:
-      return open(name, mode=mode)
-    except FileNotFoundError as e:
-      raise filesystem.NotFoundError() from e
+    return open(name, mode=mode)
 
   @staticmethod
   def copy(src: PathType, dst: PathType, overwrite: bool = False) -> None:
@@ -47,10 +44,7 @@ class LocalFilesystem(filesystem.Filesystem):
       raise OSError(
           ('Destination file %r already exists and argument `overwrite` is '
            'false.') % dst)
-    try:
-      shutil.copyfile(src, dst)
-    except FileNotFoundError as e:
-      raise filesystem.NotFoundError() from e
+    shutil.copyfile(src, dst)
 
   @staticmethod
   def exists(path: PathType) -> bool:
@@ -66,10 +60,7 @@ class LocalFilesystem(filesystem.Filesystem):
 
   @staticmethod
   def listdir(path: PathType) -> List[PathType]:
-    try:
-      return os.listdir(path)
-    except FileNotFoundError as e:
-      raise filesystem.NotFoundError() from e
+    return os.listdir(path)
 
   @staticmethod
   def makedirs(path: PathType) -> None:
@@ -77,17 +68,11 @@ class LocalFilesystem(filesystem.Filesystem):
 
   @staticmethod
   def mkdir(path: PathType) -> None:
-    try:
-      os.mkdir(path)
-    except FileNotFoundError as e:
-      raise filesystem.NotFoundError() from e
+    os.mkdir(path)
 
   @staticmethod
   def remove(path: PathType) -> None:
-    try:
-      os.remove(path)
-    except FileNotFoundError as e:
-      raise filesystem.NotFoundError() from e
+    os.remove(path)
 
   @staticmethod
   def rename(src: PathType, dst: PathType, overwrite: bool = False) -> None:
@@ -95,24 +80,15 @@ class LocalFilesystem(filesystem.Filesystem):
       raise OSError(
           ('Destination path %r already exists and argument `overwrite` is '
            'false.') % dst)
-    try:
-      os.rename(src, dst)
-    except FileNotFoundError as e:
-      raise filesystem.NotFoundError() from e
+    os.rename(src, dst)
 
   @staticmethod
   def rmtree(path: PathType) -> None:
-    try:
-      shutil.rmtree(path)
-    except FileNotFoundError as e:
-      raise filesystem.NotFoundError() from e
+    shutil.rmtree(path)
 
   @staticmethod
   def stat(path: PathType) -> Any:
-    try:
-      return os.stat(path)
-    except FileNotFoundError as e:
-      raise filesystem.NotFoundError() from e
+    return os.stat(path)
 
   @staticmethod
   def walk(
@@ -120,10 +96,7 @@ class LocalFilesystem(filesystem.Filesystem):
       topdown: bool = True,
       onerror: Callable[..., None] = None
   ) -> Iterable[Tuple[PathType, List[PathType], List[PathType]]]:
-    try:
-      yield from os.walk(top, topdown=topdown, onerror=onerror)
-    except FileNotFoundError as e:
-      raise filesystem.NotFoundError() from e
+    yield from os.walk(top, topdown=topdown, onerror=onerror)
 
 
 filesystem_registry.DEFAULT_FILESYSTEM_REGISTRY.register(

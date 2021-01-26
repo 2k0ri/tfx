@@ -187,7 +187,10 @@ class _BaseRequestBuilder(six.with_metaclass(abc.ABCMeta, object)):
         schema=None,
         read_as_raw_records=True,
         raw_record_column_name=_RAW_RECORDS_COLUMN)
-    filenames = fileio.glob(glob_pattern)
+    try:
+      filenames = fileio.glob(glob_pattern)
+    except tf.errors.NotFoundError:
+      filenames = []
     if not filenames:
       raise ValueError('Unable to find examples matching {}.'.format(
           glob_pattern))
